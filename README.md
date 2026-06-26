@@ -68,6 +68,7 @@ Run using VS Code Live Server.
 
 ### Home Screen
 
+<img width="1919" height="914" alt="main" src="https://github.com/user-attachments/assets/0d1de2ae-9e93-42c5-a974-a2445a192ce8" />
 
 
 ### Gameplay
