@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Flip — Card Matching Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================
+       TOP NAVBAR
+       ============================ -->
+  <header class="navbar">
+    <div class="navbar-brand">
+      <span class="brand-icon">🧠</span>
+      <h1 class="brand-title">Memory Flip</h1>
+    </div>
+    <div class="navbar-actions">
+      <button id="btn-dark-mode" class="icon-btn" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span class="icon">🌙</span>
+      </button>
+      <button id="btn-sound" class="icon-btn" aria-label="Toggle sound" title="Toggle sound">
+        <span class="icon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================
+       GAME CONTROLS BAR
+       ============================ -->
+  <section class="controls-bar" aria-label="Game controls">
+
+    <!-- Difficulty selector -->
+    <div class="control-group">
+      <label class="control-label" for="difficulty">Difficulty</label>
+      <div class="segmented-control" role="radiogroup" aria-label="Difficulty level">
+        <button class="seg-btn" data-difficulty="easy" aria-pressed="false">Easy</button>
+        <button class="seg-btn active" data-difficulty="medium" aria-pressed="true">Medium</button>
+        <button class="seg-btn" data-difficulty="hard" aria-pressed="false">Hard</button>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card" aria-live="polite">
+        <span class="stat-label">Time</span>
+        <span class="stat-value" id="timer">00:00</span>
+      </div>
+      <div class="stat-card" aria-live="polite">
+        <span class="stat-label">Moves</span>
+        <span class="stat-value" id="moves">0</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Best</span>
+        <span class="stat-value" id="best-score">—</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Best Time</span>
+        <span class="stat-value" id="best-time">—</span>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="action-buttons">
+      <button id="btn-restart" class="action-btn" aria-label="Restart game">
+        🔄 Restart
+      </button>
+      <button id="btn-pause" class="action-btn" aria-label="Pause game">
+        ⏸ Pause
+      </button>
+      <button id="btn-new-game" class="action-btn primary-btn" aria-label="New game">
+        ✨ New Game
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ============================
+       PAUSE OVERLAY
+       ============================ -->
+  <div id="pause-overlay" class="pause-overlay hidden" role="status" aria-live="assertive">
+    <div class="pause-content">
+      <div class="pause-icon">⏸</div>
+      <p class="pause-label">Paused</p>
+      <button id="btn-resume" class="action-btn primary-btn">▶ Resume</button>
+    </div>
+  </div>
+
+  <!-- ============================
+       GAME BOARD
+       ============================ -->
+  <main class="board-wrapper" aria-label="Memory game board">
+    <div id="game-board" class="game-board" role="grid" aria-label="Card grid">
+      <!-- Cards are injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- ============================
+       WIN MODAL
+       ============================ -->
+  <div id="win-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="win-title">
+    <div class="modal-card">
+      <div class="modal-fireworks" aria-hidden="true">🎉</div>
+      <h2 id="win-title" class="modal-title">You Win!</h2>
+      <p class="modal-subtitle">Amazing memory! All pairs found.</p>
+
+      <div class="modal-stats">
+        <div class="modal-stat">
+          <span class="modal-stat-label">Time</span>
+          <span class="modal-stat-value" id="modal-time">—</span>
+        </div>
+        <div class="modal-stat">
+          <span class="modal-stat-label">Moves</span>
+          <span class="modal-stat-value" id="modal-moves">—</span>
+        </div>
+        <div class="modal-stat">
+          <span class="modal-stat-label">Best Score</span>
+          <span class="modal-stat-value" id="modal-best">—</span>
+        </div>
+      </div>
+
+      <div class="modal-badge" id="modal-badge" aria-live="polite"></div>
+
+      <div class="modal-actions">
+        <button id="btn-play-again" class="action-btn primary-btn">🎮 Play Again</button>
+        <button id="btn-harder" class="action-btn" id="btn-harder">⬆ Next Level</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

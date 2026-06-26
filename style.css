@@ -1,0 +1,850 @@
+/* ============================================================
+   MEMORY FLIP — style.css
+   A space-noir theme: deep void backgrounds, neon card accents,
+   Orbitron display font for a retro-futuristic gaming feel.
+   ============================================================ */
+
+/* ── 1. GOOGLE FONTS ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap');
+
+/* ── 2. CSS VARIABLES (Design Tokens) ────────────────────── */
+:root {
+  /* Palette — Space Noir */
+  --void:        #07080f;   /* deepest background */
+  --deep:        #0d0f1c;   /* board surface */
+  --surface:     #12152a;   /* card back */
+  --surface-hi:  #1a1f38;   /* card hover */
+  --panel:       #0f1222;   /* navbar / controls */
+  --border:      #252a4a;   /* default border */
+  --border-hi:   #3a4180;   /* hover border */
+
+  /* Neon accents */
+  --cyan:        #00d4ff;
+  --cyan-dim:    #00a8cc;
+  --purple:      #9b6dff;
+  --purple-dim:  #7a50dd;
+  --green:       #00e5a0;
+  --green-dim:   #00b87f;
+  --amber:       #ffb800;
+  --red:         #ff4d6d;
+
+  /* Text */
+  --text-primary:   #e8eaf6;
+  --text-secondary: #8891b8;
+  --text-muted:     #555d8a;
+
+  /* Glow effects */
+  --glow-cyan:   0 0 12px #00d4ff55, 0 0 30px #00d4ff22;
+  --glow-purple: 0 0 12px #9b6dff55, 0 0 30px #9b6dff22;
+  --glow-match:  0 0 20px #00e5a055, 0 0 50px #00e5a033;
+
+  /* Card */
+  --card-radius:  14px;
+  --flip-speed:   0.5s;
+
+  /* Layout */
+  --navbar-h:     64px;
+  --controls-h:   auto;
+  --gap-sm:       8px;
+  --gap-md:       16px;
+  --gap-lg:       24px;
+
+  /* Typography */
+  --font-display: 'Orbitron', 'Courier New', monospace;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Transitions */
+  --transition:   0.2s ease;
+}
+
+/* Light mode overrides */
+[data-theme="light"] {
+  --void:        #f0f2ff;
+  --deep:        #e8ebff;
+  --surface:     #ffffff;
+  --surface-hi:  #f0f4ff;
+  --panel:       #ffffff;
+  --border:      #d0d5f0;
+  --border-hi:   #a0aae0;
+  --text-primary:   #1a1f3c;
+  --text-secondary: #555d8a;
+  --text-muted:     #9098c0;
+  --glow-cyan:   0 2px 8px rgba(0,100,200,0.12);
+  --glow-purple: 0 2px 8px rgba(100,60,220,0.12);
+  --glow-match:  0 2px 12px rgba(0,180,120,0.18);
+}
+
+/* ── 3. RESET & BASE ─────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Subtle star field texture via radial gradients */
+  background-image:
+    radial-gradient(1px 1px at 20% 15%, rgba(255,255,255,0.08) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 40%, rgba(255,255,255,0.06) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 80%, rgba(255,255,255,0.05) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.07) 0%, transparent 100%);
+  transition: background var(--transition), color var(--transition);
+}
+
+[data-theme="light"] body {
+  background-image: none;
+}
+
+/* ── 4. NAVBAR ───────────────────────────────────────────── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--navbar-h);
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gap-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+.brand-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+[data-theme="light"] .brand-title {
+  color: var(--purple-dim);
+  text-shadow: none;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: border-color var(--transition), background var(--transition), transform 0.1s;
+  color: var(--text-primary);
+}
+
+.icon-btn:hover {
+  border-color: var(--border-hi);
+  background: var(--surface-hi);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+/* ── 5. CONTROLS BAR ─────────────────────────────────────── */
+.controls-bar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: var(--gap-md) var(--gap-lg);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--gap-md);
+  justify-content: space-between;
+}
+
+/* Segmented difficulty control */
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+}
+
+.control-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.segmented-control {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.seg-btn {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 7px 14px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  white-space: nowrap;
+}
+
+.seg-btn:not(:last-child) {
+  border-right: 1px solid var(--border);
+}
+
+.seg-btn:hover:not(.active) {
+  background: var(--surface-hi);
+  color: var(--text-primary);
+}
+
+.seg-btn.active {
+  background: var(--cyan);
+  color: var(--void);
+}
+
+[data-theme="light"] .seg-btn.active {
+  background: var(--purple-dim);
+  color: #fff;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  gap: var(--gap-sm);
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 12px;
+}
+
+.stat-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cyan);
+}
+
+[data-theme="light"] .stat-value {
+  color: var(--purple-dim);
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: var(--gap-sm);
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  border-color: var(--border-hi);
+  background: var(--surface-hi);
+  transform: translateY(-1px);
+}
+
+.action-btn:active {
+  transform: scale(0.97) translateY(0);
+}
+
+.action-btn.primary-btn {
+  background: var(--cyan);
+  border-color: var(--cyan);
+  color: var(--void);
+  font-weight: 700;
+  box-shadow: var(--glow-cyan);
+}
+
+.action-btn.primary-btn:hover {
+  background: #1ae0ff;
+  border-color: #1ae0ff;
+  box-shadow: 0 0 20px #00d4ff88, 0 0 40px #00d4ff44;
+}
+
+[data-theme="light"] .action-btn.primary-btn {
+  background: var(--purple-dim);
+  border-color: var(--purple-dim);
+  color: #fff;
+  box-shadow: none;
+}
+
+/* ── 6. PAUSE OVERLAY ────────────────────────────────────── */
+.pause-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(7, 8, 15, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+[data-theme="light"] .pause-overlay {
+  background: rgba(240, 242, 255, 0.9);
+}
+
+.pause-overlay.hidden { display: none; }
+
+.pause-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+.pause-icon {
+  font-size: 64px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.pause-label {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.2em;
+}
+
+/* ── 7. GAME BOARD ───────────────────────────────────────── */
+.board-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-lg);
+}
+
+.game-board {
+  display: grid;
+  gap: 10px;
+  /* Columns set dynamically via JS */
+}
+
+/* Grid column counts per difficulty */
+.game-board.easy   { grid-template-columns: repeat(4, 1fr); }
+.game-board.medium { grid-template-columns: repeat(6, 1fr); }
+.game-board.hard   { grid-template-columns: repeat(8, 1fr); }
+
+/* ── 8. CARDS ────────────────────────────────────────────── */
+.card {
+  /* 3D flip container */
+  position: relative;
+  width: 80px;
+  height: 80px;
+  perspective: 600px;
+  cursor: pointer;
+  border-radius: var(--card-radius);
+}
+
+/* Adjust card size per difficulty */
+.game-board.easy   .card { width: 90px;  height: 90px;  }
+.game-board.medium .card { width: 76px;  height: 76px;  }
+.game-board.hard   .card { width: 60px;  height: 60px;  }
+
+/* The flipping inner element */
+.card-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  transform-style: preserve-3d;
+  transition: transform var(--flip-speed) cubic-bezier(0.4, 0.2, 0.2, 1);
+  will-change: transform;
+}
+
+/* Flipped state: rotated 180deg */
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Shared face styles */
+.card-front,
+.card-back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  user-select: none;
+  border: 1.5px solid var(--border);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* CARD BACK — the face-down question mark side */
+.card-front {
+  background: var(--surface);
+  font-size: 24px;
+  color: var(--text-muted);
+}
+
+.card:hover:not(.matched):not(.flipped) .card-front {
+  border-color: var(--cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+[data-theme="light"] .card:hover:not(.matched):not(.flipped) .card-front {
+  border-color: var(--purple);
+  box-shadow: none;
+}
+
+/* The question mark pattern on unflipped cards */
+.card-front::before {
+  content: '?';
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--border-hi);
+}
+
+/* Hide the emoji slot on front face */
+.card-front-emoji {
+  display: none;
+}
+
+/* CARD BACK — the emoji side (rotated, revealed on flip) */
+.card-back {
+  background: var(--deep);
+  transform: rotateY(180deg);
+  font-size: 32px;
+  border-color: var(--border-hi);
+}
+
+/* Emoji sizing per difficulty */
+.game-board.easy   .card-back { font-size: 36px; }
+.game-board.medium .card-back { font-size: 28px; }
+.game-board.hard   .card-back { font-size: 22px; }
+
+/* ── 8a. CARD STATE: MATCHED ─────────────────────────────── */
+.card.matched .card-inner {
+  /* Stay flipped — handled by .flipped class too */
+}
+
+.card.matched .card-back {
+  border-color: var(--green);
+  box-shadow: var(--glow-match);
+  background: rgba(0, 229, 160, 0.08);
+}
+
+[data-theme="light"] .card.matched .card-back {
+  border-color: var(--green-dim);
+  box-shadow: none;
+  background: rgba(0, 180, 120, 0.06);
+}
+
+/* Matched pulse animation */
+.card.matched .card-back {
+  animation: matchPulse 0.5s ease forwards;
+}
+
+/* ── 8b. CARD STATE: WRONG ───────────────────────────────── */
+.card.wrong .card-inner {
+  animation: wrongShake 0.5s ease;
+}
+
+.card.wrong .card-back {
+  border-color: var(--red);
+  box-shadow: 0 0 12px rgba(255, 77, 109, 0.4);
+}
+
+/* ── 9. ANIMATIONS ───────────────────────────────────────── */
+
+/* Card match pulse — green glow burst */
+@keyframes matchPulse {
+  0%   { transform: rotateY(180deg) scale(1); }
+  40%  { transform: rotateY(180deg) scale(1.1); }
+  70%  { transform: rotateY(180deg) scale(0.96); }
+  100% { transform: rotateY(180deg) scale(1); }
+}
+
+/* Wrong match shake */
+@keyframes wrongShake {
+  0%   { transform: rotateY(180deg) translateX(0); }
+  20%  { transform: rotateY(180deg) translateX(-6px); }
+  40%  { transform: rotateY(180deg) translateX(6px); }
+  60%  { transform: rotateY(180deg) translateX(-4px); }
+  80%  { transform: rotateY(180deg) translateX(4px); }
+  100% { transform: rotateY(180deg) translateX(0); }
+}
+
+/* Fade in for overlays */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Pulsing glow */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* Win modal entrance */
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Fireworks emoji spin */
+@keyframes fireworksSpin {
+  0%   { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  60%  { transform: scale(1.2) rotate(5deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* New badge pop */
+@keyframes badgePop {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Card deal animation — cards slide in from above */
+@keyframes cardDeal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card {
+  animation: cardDeal 0.3s ease both;
+}
+
+/* ── 10. WIN MODAL ───────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(7, 8, 15, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gap-lg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+}
+
+[data-theme="light"] .modal-backdrop {
+  background: rgba(200, 205, 240, 0.85);
+}
+
+.modal-backdrop.hidden { display: none; }
+
+.modal-card {
+  background: var(--panel);
+  border: 1px solid var(--cyan);
+  border-radius: 20px;
+  padding: var(--gap-lg) calc(var(--gap-lg) * 1.5);
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--glow-cyan), 0 20px 60px rgba(0,0,0,0.6);
+  animation: modalSlideUp 0.4s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+[data-theme="light"] .modal-card {
+  border-color: var(--purple);
+  box-shadow: 0 8px 40px rgba(100, 60, 220, 0.15);
+}
+
+.modal-fireworks {
+  font-size: 56px;
+  animation: fireworksSpin 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+  animation-delay: 0.1s;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  text-shadow: var(--glow-cyan);
+}
+
+[data-theme="light"] .modal-title {
+  color: var(--purple-dim);
+  text-shadow: none;
+}
+
+.modal-subtitle {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.modal-stats {
+  display: flex;
+  gap: var(--gap-md);
+  width: 100%;
+  justify-content: center;
+}
+
+.modal-stat {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px var(--gap-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.modal-stat-label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.modal-stat-value {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-badge {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: linear-gradient(135deg, var(--cyan), var(--purple));
+  color: var(--void);
+  padding: 6px 18px;
+  border-radius: 100px;
+  animation: badgePop 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+  animation-delay: 0.4s;
+  opacity: 0;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.modal-badge:empty {
+  display: none;
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--gap-sm);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── 11. RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 var(--gap-md);
+  }
+
+  .brand-title {
+    font-size: 16px;
+  }
+
+  .controls-bar {
+    padding: var(--gap-sm) var(--gap-md);
+    gap: var(--gap-sm);
+  }
+
+  .stats-row {
+    gap: 6px;
+  }
+
+  .stat-card {
+    min-width: 60px;
+    padding: 4px 8px;
+  }
+
+  .stat-value {
+    font-size: 14px;
+  }
+
+  .board-wrapper {
+    padding: var(--gap-sm);
+  }
+
+  .game-board {
+    gap: 7px;
+  }
+
+  .game-board.easy   .card { width: 72px;  height: 72px;  }
+  .game-board.medium .card { width: 58px;  height: 58px;  }
+  .game-board.hard   .card { width: 42px;  height: 42px;  }
+
+  .game-board.easy   .card-back { font-size: 28px; }
+  .game-board.medium .card-back { font-size: 22px; }
+  .game-board.hard   .card-back { font-size: 16px; }
+
+  .card-front::before {
+    font-size: 18px;
+  }
+
+  .action-buttons {
+    gap: 6px;
+  }
+
+  .action-btn {
+    font-size: 10px;
+    padding: 7px 10px;
+  }
+
+  .modal-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-board.hard { grid-template-columns: repeat(8, 1fr); }
+  .game-board.hard .card { width: 36px; height: 36px; }
+  .game-board.hard .card-back { font-size: 14px; }
+  .card-front::before { font-size: 14px; }
+
+  .control-group { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+
+/* ── 12. ACCESSIBILITY ───────────────────────────────────── */
+
+/* Visible keyboard focus rings */
+.card:focus-visible,
+.action-btn:focus-visible,
+.seg-btn:focus-visible,
+.icon-btn:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+[data-theme="light"] .card:focus-visible,
+[data-theme="light"] .action-btn:focus-visible,
+[data-theme="light"] .seg-btn:focus-visible,
+[data-theme="light"] .icon-btn:focus-visible {
+  outline-color: var(--purple);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .card-inner,
+  .card,
+  .action-btn,
+  .modal-card,
+  .pause-overlay {
+    transition: none;
+    animation: none;
+  }
+
+  .card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card.matched .card-back {
+    animation: none;
+  }
+
+  .card.wrong .card-inner {
+    animation: none;
+  }
+}
+
+/* ── 13. SCROLLBAR (optional polish) ─────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  background: var(--deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hi);
+}
