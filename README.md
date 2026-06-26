@@ -1,5 +1,9 @@
 # 🧠 Memory Flip – Card Matching Game
 
+## 🌐 Live Demo
+
+https://shashendrachary.github.io/memory-flip-game/
+
 A modern and responsive Memory Card Matching Game built using **HTML, CSS, and Vanilla JavaScript**.
 
 This project demonstrates DOM manipulation, game logic, animations, responsive UI design, local storage, and JavaScript state management.
