@@ -51,7 +51,7 @@ memory-flip-game/
 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/memory-flip-game.git
+git clone https://github.com/shashendrachary/memory-flip-game.git
 ```
 
 2. Open the project folder
@@ -73,11 +73,17 @@ Run using VS Code Live Server.
 
 ### Gameplay
 
-(Add screenshot here)
+<img width="1917" height="920" alt="gameplay" src="https://github.com/user-attachments/assets/4f7b6c46-a616-4f7b-b559-baeda19995d6" />
+
 
 ### Win Screen
 
-(Add screenshot here)
+<img width="1042" height="689" alt="win" src="https://github.com/user-attachments/assets/5468d8ea-b950-4021-a531-45690cb51e72" />
+
+### Light Screen
+
+<img width="1915" height="941" alt="light-mode" src="https://github.com/user-attachments/assets/49cdbd2f-3889-4469-817e-15495288740d" />
+
 
 ---
 
